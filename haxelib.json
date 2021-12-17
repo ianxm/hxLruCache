@@ -1,0 +1,13 @@
+{
+  "name": "hxLruCache",
+  "license": "BSD",
+  "tags": ["cross"],
+  "description": "simple LRU cache based on Map",
+  "contributors": ["ianxm"],
+  "releasenote": "initial",
+  "version": "0.0.1",
+  "url": "https://github.com/ianxm/hxLruCache",
+  "dependencies": {
+
+  }
+}
