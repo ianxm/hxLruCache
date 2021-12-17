@@ -2,7 +2,7 @@ class TestLruCache extends haxe.unit.TestCase
 {
     public function testAddHasGet()
     {
-        var cache = new LruCache(3);
+        var cache = new LruCache<String>(3);
         cache.add("key1", "value1");
         cache.add("key2", "value2");
 
@@ -16,7 +16,7 @@ class TestLruCache extends haxe.unit.TestCase
 
     public function testAddAddEvict()
     {
-        var cache = new LruCache(2);
+        var cache = new LruCache<String>(2);
         cache.add("key1", "value1");
         cache.add("key2", "value2");
         cache.add("key3", "value3");
@@ -28,7 +28,7 @@ class TestLruCache extends haxe.unit.TestCase
 
     public function testAddTouchEvict()
     {
-        var cache = new LruCache(2);
+        var cache = new LruCache<String>(2);
         cache.add("key1", "value1");
         cache.add("key2", "value2");
         cache.get("key1");
@@ -37,5 +37,19 @@ class TestLruCache extends haxe.unit.TestCase
         assertTrue(cache.has("key1"));
         assertFalse(cache.has("key2"));
         assertTrue(cache.has("key3"));
+    }
+
+    public function testAddHasGetInt()
+    {
+        var cache = new LruCache<Int>(3);
+        cache.add("key1", 1);
+        cache.add("key2", 2);
+
+        assertTrue(cache.has("key1"));
+        assertTrue(cache.has("key2"));
+        assertFalse(cache.has("key3"));
+
+        assertEquals(1, cache.get("key1"));
+        assertEquals(2, cache.get("key2"));
     }
 }

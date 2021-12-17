@@ -1,27 +1,28 @@
 using Lambda;
 
-typedef CacheObject = {
-  response :String,
-  accessTime :Float
+typedef CacheObject<T> = {
+    response :T,
+    accessTime :Float
 };
 
-class LruCache {
+class LruCache<T> {
+
     public var capacity(default,null) :Int;
-    private var cacheData :Map<String, CacheObject>;
-    private var length = 0;
+    private var cacheData :Map<String, CacheObject<T>>;
+    public var length(default,null) = 0;
       
     public function new(capacity) {
         this.capacity = capacity;
-        this.cacheData = new Map<String,CacheObject>();
+        this.cacheData = new Map<String,CacheObject<T>>();
     }
 
-    public function add(key :String, value :String) {
+    public function add(key :String, value :T) {
         if( !cacheData.exists(key) )
             length++;
 
         var cacheObj = {
             response: value,
-            accessTime: Sys.time()
+            accessTime: getTime()
         };
         cacheData.set(key, cacheObj);
 
@@ -30,17 +31,17 @@ class LruCache {
         }
     }
 
-    public function has(key) {
+    inline public function has(key) {
         return cacheData.exists(key);
     }
 
     public function get(key) {
         var value = cacheData.get(key);
-        value.accessTime = Sys.time();
+        value.accessTime = getTime();
         return value.response;
     }
 
-    public function remove(key) {
+    inline public function remove(key) {
         cacheData.remove(key);
     }
 
@@ -55,5 +56,12 @@ class LruCache {
         }
         cacheData.remove(oldestKey);
     }
-}
 
+    private function getTime() {
+#if sys
+        return Sys.time();
+#else
+        return Date.now().getTime();
+#end
+    }
+}
